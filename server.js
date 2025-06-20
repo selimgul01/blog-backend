@@ -13,8 +13,9 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 app.use(cors({
-    origin: "https://block-frontend-zeta.vercel.app/"
-}))
+  origin: "https://block-frontend-zeta.vercel.app", 
+  credentials: true, 
+}));
 app.use("/post",postRouter) 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/auth",authRouter)
