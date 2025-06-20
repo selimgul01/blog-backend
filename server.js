@@ -12,7 +12,9 @@ const authRouter = require("./routes/authRoutes")
 const PORT = process.env.PORT || 5000
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: "https://block-frontend-zeta.vercel.app/"
+}))
 app.use("/post",postRouter) 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/auth",authRouter)
