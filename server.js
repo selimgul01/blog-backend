@@ -20,6 +20,10 @@ app.use("/post",postRouter)
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/auth",authRouter)
 
+app.get("/", (req, res) => {
+  res.send("API is working 🚀");
+});
+
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI)
