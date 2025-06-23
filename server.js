@@ -14,19 +14,20 @@ const PORT = process.env.PORT || 5000
 const allowedOrigins = [
   "https://block-frontend-zeta.vercel.app",
   "https://block-frontend-kb5gfzsgv-selims-projects-c3c368e9.vercel.app",
+  // başka domainler varsa ekle
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS hatası: Erişim engellendi"));
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // Postman gibi araçlar için izin ver
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `CORS policy: ${origin} not allowed`;
+      return callback(new Error(msg), false);
     }
+    return callback(null, true);
   },
   credentials: true,
 }));
-
 
 app.use(express.json())
 
