@@ -22,7 +22,7 @@ const createPost = async (req, res) => {
 
     res.status(201).json( {savedPost, message: "Post Oluşturuldu" });
   } catch (error) {
-    console.log("ERROR:::",error)
+    
     res.status(500).json({ message: `Sunucu Hatası ${error}` }); 
   }
 };
@@ -43,7 +43,15 @@ const getMyPosts = async (req, res) => {
 
 const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+
+    const {tags} = req.query
+    let filter = {}
+
+    if (tags) {
+      filter.tags = tags
+    }
+
+    const posts = await Post.find(filter).sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: `Sunucu Hatası ${error}` });

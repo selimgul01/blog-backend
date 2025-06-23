@@ -25,7 +25,7 @@ const register = async (req,res) => {
     } 
 }
 
-
+ 
 
 
 const login = async (req,res) =>  {
@@ -33,8 +33,9 @@ const login = async (req,res) =>  {
         const {email, password} = req.body
 
         const user = await User.findOne({email})
-        if(!user) return res.status(400).json({message:"Böyle Bir Kullanıcı Kayıtlı Değil "})
         
+        if(!user) return res.status(400).json({message:"Böyle Bir Kullanıcı Kayıtlı Değil "})
+       
         const passwordCompare = await bcrypt.compare(password, user.password)
         if(!passwordCompare) return res.status(400).json({message:"Şifreniz Yanlış "})
 
@@ -42,7 +43,8 @@ const login = async (req,res) =>  {
         res.status(201).json({message:"Giriş Başarılı", user, token})
 
     } catch (error) {
-        
+        res.status(500).json({message:"Sunucu Hatası"})
+        console.log("error:",error)
     } 
 }
 
