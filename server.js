@@ -11,11 +11,25 @@ const authRouter = require("./routes/authRoutes")
 
 const PORT = process.env.PORT || 5000
 
-app.use(express.json())
+const allowedOrigins = [
+  "https://block-frontend-zeta.vercel.app",
+  "https://block-frontend-kb5gfzsgv-selims-projects-c3c368e9.vercel.app",
+];
+
 app.use(cors({
-  origin: "https://block-frontend-zeta.vercel.app", 
-  credentials: true, 
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS hatası: Erişim engellendi"));
+    }
+  },
+  credentials: true,
 }));
+
+
+app.use(express.json())
+
 app.use("/post",postRouter) 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.use("/auth",authRouter)
